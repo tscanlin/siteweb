@@ -1,0 +1,25 @@
+{
+  "name": "crawl-sitemap",
+  "version": "1.0.0",
+  "description": "crawl a site to generate a sitemap",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tscanlin/crawl-sitemap.git"
+  },
+  "author": "Tim Scanlin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tscanlin/crawl-sitemap/issues"
+  },
+  "homepage": "https://github.com/tscanlin/crawl-sitemap#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "d3-queue": "^3.0.5",
+    "isomorphic-fetch": "^2.2.1",
+    "yargs": "^7.0.2"
+  }
+}
