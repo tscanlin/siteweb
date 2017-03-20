@@ -1,5 +1,5 @@
 {
-  "name": "crawl-sitemap",
+  "name": "siteweb",
   "version": "1.0.0",
   "description": "crawl a site to generate a sitemap",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tscanlin/crawl-sitemap.git"
+    "url": "git+https://github.com/tscanlin/siteweb.git"
   },
   "author": "Tim Scanlin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tscanlin/crawl-sitemap/issues"
+    "url": "https://github.com/tscanlin/siteweb/issues"
   },
-  "homepage": "https://github.com/tscanlin/crawl-sitemap#readme",
+  "homepage": "https://github.com/tscanlin/siteweb#readme",
   "dependencies": {
     "cheerio": "^0.22.0",
     "d3-queue": "^3.0.5",
