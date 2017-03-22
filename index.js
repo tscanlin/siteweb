@@ -5,7 +5,6 @@ const cheerio = require('cheerio')
 const Url = require('url')
 
 const defaultOptions = {
-  // throttle??
   // limit
   //
   includeExternal: true,
@@ -49,6 +48,7 @@ function buildOutput(opt, callback) {
 
   function fetchUrl(url, internal) {
     url = url.split('#')[0]
+    const obj = {}
     return fetch(url)
       .then(function(r) {
         requests[url].endTime = Date.now()
@@ -67,7 +67,6 @@ function buildOutput(opt, callback) {
         const newPromises = []
 
         // Build output object.
-        const obj = {}
         obj.linkCount = links.length
         obj.url = url
         obj.isInternal = internal
@@ -78,17 +77,19 @@ function buildOutput(opt, callback) {
 
         if (internal) {
           links.each((i, link) => {
-            const fullUrl = Url.resolve(url, link.attribs.href).split('#')[0]
-            if (!requests[fullUrl]) {
-              const fullUrlInternal = isInternal(url, fullUrl)
-              if (fullUrlInternal || options.includeExternal) {
-                requests[fullUrl] = {}
-                if (fullUrlInternal || options.fetchExternal) {
-                  requests[fullUrl].startTime = Date.now()
-                  // console.log(fullUrl, fullUrlInternal);
-                  newPromises.push(fetchUrl(fullUrl, fullUrlInternal))
-                } else {
-                  output.pages.external[fullUrl] = {}
+            const href = link.attribs.href
+            if (href) {
+              const fullUrl = Url.resolve(url, href).split('#')[0]
+              if (!requests[fullUrl]) {
+                const fullUrlInternal = isInternal(url, fullUrl)
+                if (fullUrlInternal || options.includeExternal) {
+                  requests[fullUrl] = {}
+                  if (fullUrlInternal || options.fetchExternal) {
+                    requests[fullUrl].startTime = Date.now()
+                    newPromises.push(fetchUrl(fullUrl, fullUrlInternal))
+                  } else {
+                    output.pages.external[fullUrl] = {}
+                  }
                 }
               }
             }
@@ -125,7 +126,7 @@ function isInternal(baseUrl, url) {
 
 buildOutput({
   startUrls: [
-    'http://blog.timscanlin.net'
+    'http://developers.optimizely.com'
   ]
 }, function(err, o) {
   console.log(o);
