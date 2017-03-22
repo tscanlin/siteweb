@@ -9,6 +9,10 @@ const defaultOptions = {
   //
   includeExternal: true,
   fetchExternal: false,
+  maxPages: Infinity,
+
+  // Reporting options?
+  // timing the whole thing^
 }
 
 // Make initial promise from startUrls
@@ -25,6 +29,7 @@ function buildOutput(opt, callback) {
     }
   }
   const requests = {}
+  let pageCount = 0
 
   const p = new Promise(function(resolve, reject) {
     if (options.startUrls && options.startUrls.length) {
@@ -49,6 +54,11 @@ function buildOutput(opt, callback) {
   function fetchUrl(url, internal) {
     url = url.split('#')[0]
     const obj = {}
+    pageCount++
+    if (pageCount > options.maxPages) {
+      throw new Error('Error: Maximum number of pages reached.')
+    }
+
     return fetch(url)
       .then(function(r) {
         requests[url].endTime = Date.now()
@@ -59,6 +69,10 @@ function buildOutput(opt, callback) {
           && r.headers._headers
           && r.headers._headers['last-modified']
           && r.headers._headers['last-modified'][0]
+        obj.contentLength = r.headers
+          && r.headers._headers
+          && r.headers._headers['content-length']
+          && r.headers._headers['content-length'][0]
         return r.text()
       }).then(function(d) {
 
@@ -126,7 +140,8 @@ function isInternal(baseUrl, url) {
 
 buildOutput({
   startUrls: [
-    'http://developers.optimizely.com'
+    // 'http://developers.optimizely.com'
+    'http://blog.timscanlin.net'
   ]
 }, function(err, o) {
   console.log(o);
