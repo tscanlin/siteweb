@@ -5,19 +5,17 @@ const cheerio = require('cheerio')
 const Url = require('url')
 
 const defaultOptions = {
-  // throttle?
+  // throttle??
+  // limit
+  //
+  includeExternal: true,
+  fetchExternal: false,
 }
 
 // Make initial promise from startUrls
 // Go to pages and make more promises [cascading]
 // After all the promises are done return data.
 
-
-// Add request
-// Process request
-
-
-//
 
 function buildOutput(opt, callback) {
   const options = Object.assign({}, defaultOptions, opt)
@@ -31,8 +29,10 @@ function buildOutput(opt, callback) {
 
   const p = new Promise(function(resolve, reject) {
     if (options.startUrls && options.startUrls.length) {
-      const promises = options.startUrls.map(function(url) {
-        return fetchUrl(url, true)
+      const promises = options.startUrls.map(function(startUrl) {
+        requests[startUrl] = {}
+        requests[startUrl].startTime = Date.now()
+        return fetchUrl(startUrl, true)
       })
       return Promise.all(promises).then(function(d) {
         resolve(output)
@@ -49,9 +49,11 @@ function buildOutput(opt, callback) {
 
   function fetchUrl(url, internal) {
     url = url.split('#')[0]
-    const obj = {}
     return fetch(url)
       .then(function(r) {
+        requests[url].endTime = Date.now()
+        requests[url].deltaTime = requests[url].endTime - requests[url].startTime
+        // Add request stuff to data object.
         obj.status = r.status
         obj.lastModified = r.headers
           && r.headers._headers
@@ -59,30 +61,41 @@ function buildOutput(opt, callback) {
           && r.headers._headers['last-modified'][0]
         return r.text()
       }).then(function(d) {
+
         const $ = cheerio.load(d)
         const links = $('a')
-
-
         const newPromises = []
+
+        // Build output object.
+        const obj = {}
+        obj.linkCount = links.length
+        obj.url = url
+        obj.isInternal = internal
+        obj.fetchTime = requests[url].deltaTime
+        const where = internal ? 'internal' : 'external'
+        // This sets the data key to output.
+        output.pages[where][url] = obj
+
         if (internal) {
           links.each((i, link) => {
             const fullUrl = Url.resolve(url, link.attribs.href).split('#')[0]
             if (!requests[fullUrl]) {
-              requests[fullUrl] = true
               const fullUrlInternal = isInternal(url, fullUrl)
-              // console.log(fullUrl, fullUrlInternal);
-              newPromises.push(fetchUrl(fullUrl, fullUrlInternal))
+              if (fullUrlInternal || options.includeExternal) {
+                requests[fullUrl] = {}
+                if (fullUrlInternal || options.fetchExternal) {
+                  requests[fullUrl].startTime = Date.now()
+                  // console.log(fullUrl, fullUrlInternal);
+                  newPromises.push(fetchUrl(fullUrl, fullUrlInternal))
+                } else {
+                  output.pages.external[fullUrl] = {}
+                }
+              }
             }
           })
         }
 
-        // Add object to output.
-        obj.linkCount = links.length
-        obj.url = url
 
-        const where = internal ? 'internal' : 'external'
-        // console.log(where);
-        output.pages[where][url] = obj
 
         if (newPromises.length > 0) {
           return Promise.all(newPromises)
