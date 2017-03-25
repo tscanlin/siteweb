@@ -1,24 +1,15 @@
 #!/usr/bin/env node
 
+'use-strict';
+
 require('isomorphic-fetch')
 const cheerio = require('cheerio')
 const Url = require('url')
-
-const defaultOptions = {
-  // limit
-  //
-  includeExternal: true,
-  fetchExternal: false,
-  maxPages: Infinity,
-
-  // Reporting options?
-  // timing the whole thing^
-}
+const defaultOptions = require('./defaultOptions.js')
 
 // Make initial promise from startUrls
 // Go to pages and make more promises [cascading]
 // After all the promises are done return data.
-
 
 function buildOutput(opt, callback) {
   const options = Object.assign({}, defaultOptions, opt)
@@ -29,7 +20,7 @@ function buildOutput(opt, callback) {
     }
   }
   const requests = {}
-  let pageCount = 0
+  var pageCount = 0
 
   const p = new Promise(function(resolve, reject) {
     if (options.startUrls && options.startUrls.length) {
@@ -38,18 +29,11 @@ function buildOutput(opt, callback) {
         requests[startUrl].startTime = Date.now()
         return fetchUrl(startUrl, true)
       })
-      return Promise.all(promises).then(function(d) {
+      Promise.all(promises).then((d) => {
         resolve(output)
       })
     }
   })
-
-  // function fetchMultipleUrls(urls) {
-  //   const promises = urls.map(function(url) {
-  //     return fetchUrl(url, true)
-  //   })
-  //   return Promise.all(promises)
-  // }
 
   function fetchUrl(url, internal) {
     url = url.split('#')[0]
@@ -117,8 +101,8 @@ function buildOutput(opt, callback) {
         }
 
         return output
-      }).catch(function(e) {
-        console.log(e);
+      }).then(options.finalPromise).catch(function(e) {
+        // console.log(e);
       })
   }
 
@@ -130,22 +114,4 @@ function isInternal(baseUrl, url) {
   return hostname === Url.parse(url).hostname
 }
 
-
-// function processUrl(url, requests) {
-//   // get url and check against cache
-//   // get output and determine if internal / external
-// }
-// Add to map
-
-
-buildOutput({
-  startUrls: [
-    // 'http://developers.optimizely.com'
-    'http://blog.timscanlin.net'
-  ]
-}, function(err, o) {
-  console.log(o);
-}).then(function(data) {
-  // console.log(data);
-  process.stdout.write(JSON.stringify(data))
-})
+module.exports = buildOutput

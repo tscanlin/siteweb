@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "crawl a site to generate a sitemap",
   "main": "index.js",
+  "bin": {
+    "siteweb": "./cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
