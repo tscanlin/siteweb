@@ -31,9 +31,7 @@ function run(opt, callback) {
       options.startUrls.forEach(function(startUrl) {
         queue.add(function() {
           return fetchUrl(startUrl, true)
-        }).then(function(data) {
-          return data
-        }).catch(function(e) {
+        }).then(checkQueue).catch(function(e) {
           console.error(e)
         })
       })
@@ -49,6 +47,12 @@ function run(opt, callback) {
       url = url.split('#')[0]
 
       return new Promise(function(res, rej) {
+        // Skip mailto and ftp links.
+        console.log(url.indexOf('mailto:'));
+        if (url.indexOf('mailto:') === 0 || url.indexOf('ftp:') === 0) {
+          res(output)
+          return
+        }
         setTimeout(function() {
           requests[url] = {}
           if (options.preFetchCallback) {
@@ -113,19 +117,7 @@ function run(opt, callback) {
             if (fullUrlInternal || options.fetchExternal) {
               queue.add(function() {
                 return fetchUrl(fullUrl, fullUrlInternal)
-              }).then(function(data) {
-                // Final result.
-                if (queue.pendingPromises === 0) {
-                  output.stats.endTime = Date.now()
-                  output.stats.totalTime = output.stats.endTime - output.stats.startTime
-
-                  if (callback) {
-                    callback(null, output)
-                  }
-                  resolve(output)
-                }
-                return data
-              }).catch(function(e) {
+              }).then(checkQueue).catch(function(e) {
                 if (callback) {
                   callback(e)
                 }
@@ -138,6 +130,20 @@ function run(opt, callback) {
           }
         }
       }
+    }
+
+    function checkQueue(data) {
+      // Final result.
+      if (queue.pendingPromises === 0) {
+        output.stats.endTime = Date.now()
+        output.stats.totalTime = output.stats.endTime - output.stats.startTime
+
+        if (callback) {
+          callback(null, output)
+        }
+        resolve(output)
+      }
+      return data
     }
   })
 }
