@@ -48,7 +48,6 @@ function run(opt, callback) {
 
       return new Promise(function(res, rej) {
         // Skip mailto and ftp links.
-        console.log(url.indexOf('mailto:'));
         if (url.indexOf('mailto:') === 0 || url.indexOf('ftp:') === 0) {
           res(output)
           return
