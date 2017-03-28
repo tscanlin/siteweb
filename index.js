@@ -53,6 +53,13 @@ function run(opt, callback) {
       return new Promise(function(res, rej) {
         setTimeout(function() {
           requests[url] = {}
+          if (options.preFetchCallback) {
+            options.preFetchCallback({
+              url: url,
+              requests: requests,
+              output: output,
+            })
+          }
           requests[url].startTime = Date.now()
           fetch(url)
             .then(function(r) {
@@ -81,6 +88,15 @@ function run(opt, callback) {
                   processLink(i, link, url)
                 })
               }
+
+              if (options.postFetchCallback) {
+                options.postFetchCallback({
+                  url: url,
+                  requests: requests,
+                  output: output,
+                })
+              }
+
               res(output)
             }).catch(function(e) {
               console.error(e)

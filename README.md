@@ -58,22 +58,22 @@ module.exports = {
   startUrls: [
     'http://blog.timscanlin.net'
   ],
+  // Limit the number of concurrent requests.
+  concurrency: 6,
+  // Max queue size.
+  maxQueue: 500,
   // Whether to include any external URLs in output.
   includeExternal: true,
   // Whether to fetch the external pages (depends on `includeExternal`)
   fetchExternal: false,
-  // Limit the number of concurrent requests.
-  concurrency: 6,
-  // Max queue size.
-  maxQueue: 1000,
   // Limit of pages to fetch.
   maxPages: 500,
-  // Not yet implemented...
+  // Delay between requests in ms.
+  delay: 0,
+  // Pre fetch callback.
   preFetchCallback: () => {},
+  // Post fetch callback.
   postFetchCallback: () => {},
-
-  // Reporting options?
-  // timing the whole thing^
 }
 ```
 
@@ -86,5 +86,4 @@ Be careful! This tool recursively fetches all the links on a website. By default
 ## TODO
 
 - demo page with visualization!
-- pre / post / complete hooks
-- more output options?
+- more output options / data?
