@@ -4,11 +4,13 @@
 
 siteweb is a tool that can quickly and easily get stats about all the pages on your website. Give it URLs and it will go fetch all of the linked pages and record info about each page. This is useful for testing websites and making sure nothing breaks after deploys for instance. This can also be used to identify the slowest (or fastest) pages on your website.
 
-- super fast using node with [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) and [cheeriojs](https://github.com/cheeriojs/cheerio)
-- runs on the client and the server
 - easy to use, just start with a URL
+- runs quickly using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) and [cheeriojs](https://github.com/cheeriojs/cheerio)
+- runs on the client and the server
 - concurrency control
-- throttle request [todo]
+- returns a promise
+- cli args parsed with [yargs](https://github.com/yargs/yargs)
+- option to add a delay between requests
 
 
 ## Getting Started
@@ -45,6 +47,8 @@ siteweb.run(options, (err, data) => {
 })
 ```
 
+Currently it only exposes one `run` method.
+
 
 ## Default Options
 
@@ -73,9 +77,6 @@ module.exports = {
 }
 ```
 
-```js
-```
-
 
 ### Warning
 
@@ -84,4 +85,6 @@ Be careful! This tool recursively fetches all the links on a website. By default
 
 ## TODO
 
-- refactor to use a queue
+- demo page with visualization!
+- pre / post / complete hooks
+- more output options?

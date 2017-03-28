@@ -21,14 +21,21 @@ describe('siteweb', function() {
     })
   })
 
+  it('should have a promise api', function(done) {
+    siteweb.run({}).then(function(data) {
+      expect(Object.keys(data.pages.external).length).toEqual(blogData.external.length)
+      done()
+    })
+  })
+
   it('should work via cli', function(done) {
     const cli = spawn('node', ['./cli.js'])
 
     cli.stdout.on('data', function(data) {
-      // TODO: Note to self, this is a very bad test since the output response
-      // could vary alot if latency increases for instance. Redo this check to
-      // be better in the future, but for now it seems reliable enough.
-      expect(data.toString().length).toEqual(blogData.stringified.length)
+      var actualLength = data.toString().length
+      var expectedLength = blogData.stringified.length
+      expect(actualLength > expectedLength - 5).toBe(true)
+      expect(actualLength < expectedLength + 5).toBe(true)
     })
 
     cli.on('close', function(code) {

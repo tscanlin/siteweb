@@ -13,10 +13,9 @@ module.exports = {
   fetchExternal: false,
   // Limit of pages to fetch.
   maxPages: 500,
+  // Delay between requests in ms.
+  delay: 0,
   // Not yet implemented...
   preFetchCallback: () => {},
   postFetchCallback: () => {},
-
-  // Reporting options?
-  // timing the whole thing^
 }
