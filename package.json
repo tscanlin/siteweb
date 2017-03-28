@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node ./cli",
+    "build": "webpack",
     "test": "./node_modules/.bin/jasmine"
   },
   "repository": {
@@ -22,7 +23,6 @@
   "homepage": "https://github.com/tscanlin/siteweb#readme",
   "dependencies": {
     "cheerio": "^0.22.0",
-    "d3-queue": "^3.0.5",
     "isomorphic-fetch": "^2.2.1",
     "promise-queue": "^2.2.3",
     "yargs": "^7.0.2"

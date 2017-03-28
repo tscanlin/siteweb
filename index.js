@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 'use-strict';
 
 require('isomorphic-fetch')
@@ -21,7 +19,7 @@ function run(opt, callback) {
     stats: {
       startTime: Date.now(),
       endTime: null,
-      elapsedTime: null,
+      totalTime: null,
     }
   }
   const requests = {}
@@ -119,7 +117,7 @@ function run(opt, callback) {
                 // Final result.
                 if (queue.pendingPromises === 0) {
                   output.stats.endTime = Date.now()
-                  output.stats.elapsedTime = output.stats.endTime - output.stats.startTime
+                  output.stats.totalTime = output.stats.endTime - output.stats.startTime
 
                   if (callback) {
                     callback(null, output)
@@ -128,6 +126,10 @@ function run(opt, callback) {
                 }
                 return data
               }).catch(function(e) {
+                if (callback) {
+                  callback(e)
+                }
+                reject(e)
                 console.error(e)
               })
             } else {
