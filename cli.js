@@ -6,7 +6,7 @@ const argv = require('yargs')
   .usage('Usage: $0 <command> [options]')
   .argv;
 
-if (process.argv && process.argv.length > 2) {
+if (process.argv && process.argv.length > 1) {
   defaultOptions.outputFile = '' // Default to no output file over cli because of stdout.
   const options = Object.assign({}, defaultOptions, argv)
 

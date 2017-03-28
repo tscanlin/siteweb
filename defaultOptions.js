@@ -16,8 +16,6 @@ module.exports = {
   // Not yet implemented...
   preFetchCallback: () => {},
   postFetchCallback: () => {},
-  queueCallback: function(o) {
-  },
 
   // Reporting options?
   // timing the whole thing^

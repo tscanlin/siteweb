@@ -7,7 +7,7 @@
     "siteweb": "./cli.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jasmine"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,8 @@
     "isomorphic-fetch": "^2.2.1",
     "promise-queue": "^2.2.3",
     "yargs": "^7.0.2"
+  },
+  "devDependencies": {
+    "jasmine": "^2.5.3"
   }
 }
