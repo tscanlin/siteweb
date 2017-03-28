@@ -10,33 +10,47 @@
   </head>
   <body>
     <!-- APP_CONTENT_HERE -->
+    <form id="input" class="ma3">
+      <input type="text" name="url">
+      <input type="submit" name="" value="Submit">
+    </form>
+
+    <h2 class="ml3">Results</h2>
     <div id="results"></div>
 
     <!-- <script src="assets/js/tocbot.js"></script> -->
     <script src="./d3.min.js"></script>
     <script src="./bundle.js"></script>
     <script>
-      siteweb.run({
+      document.querySelector('#input').addEventListener('submit', runSiteweb)
 
-      }).then(function(data) {
-        var arr = Object.keys(data.pages.internal).map(function(pg) {
-          console.log(data.pages.internal[pg]);
-          return data.pages.internal[pg]
+      function runSiteweb(e) {
+        if (e) e.preventDefault()
+        var opt = e && e.target
+          ? {
+            startUrls: [e.target.children[0].value]
+          } : {}
+        siteweb.run(opt).then(function(data) {
+          var arr = Object.keys(data.pages.internal).map(function(pg) {
+            return data.pages.internal[pg]
+          })
+
+          var results = d3.select('#results')
+            .classed('ma3', true)
+
+          var divs = results.selectAll('div')
+            .data(arr)
+            .enter().append('div')
+
+          divs.append('div')
+            .text(function(d) { return d.url + ' (' + d.fetchTime + 'ms)'; })
+          divs.append('div')
+            .classed('h1 bg-navy mt1 mb3', true)
+            .style('width', function(d) { return d.fetchTime * 5 + 'px'; })
         })
+      }
 
-        var results = d3.select('#results')
-          .classed('ma2', true)
-
-        var divs = results.selectAll('div')
-          .data(arr)
-          .enter().append('div')
-
-        divs.append('div')
-          .text(function(d) { return d.url + ' (' + d.fetchTime + 'ms)'; })
-        divs.append('div')
-          .classed('h1 bg-navy mt1 mb3', true)
-          .style('width', function(d) { return d.fetchTime * 10 + 'px'; })
-      })
+      runSiteweb()
     </script>
     <script>
         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

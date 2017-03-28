@@ -59,7 +59,7 @@ function run(opt, callback) {
             })
           }
           requests[url].startTime = Date.now()
-          fetch(url)
+          fetch(url, options.fetchOptions)
             .then(function(r) {
               requests[url].endTime = Date.now()
               requests[url].elapsedTime = requests[url].endTime - requests[url].startTime
