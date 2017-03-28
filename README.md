@@ -87,3 +87,4 @@ Be careful! This tool recursively fetches all the links on a website. By default
 
 - demo page with visualization!
 - more output options / data?
+- make a similar project using nightmare that can run js
