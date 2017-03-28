@@ -7,6 +7,7 @@
     "siteweb": "./cli.js"
   },
   "scripts": {
+    "start": "node ./cli",
     "test": "./node_modules/.bin/jasmine"
   },
   "repository": {

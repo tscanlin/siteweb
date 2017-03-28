@@ -8,19 +8,11 @@ const Url = require('url')
 const Queue = require('promise-queue')
 const defaultOptions = require('./defaultOptions.js')
 
-// Make initial promise from startUrls
-// Go to pages and make more promises [cascading]
-// After all the promises are done return data.
-
-
-// getRequestData
-// getPageData
-// Start timer
-
 
 function run(opt, callback) {
   const options = Object.assign({}, defaultOptions, opt)
   const queue = new Queue(options.concurrency, options.maxQueue)
+  // Main data structure.
   const output = {
     pages: {
       internal: {},
@@ -106,7 +98,7 @@ function run(opt, callback) {
 
                 // process.stdout.write(JSON.stringify(data))
                 if (callback) {
-                  callback(output)
+                  callback(null, output)
                 }
               }
               return data

@@ -12,11 +12,11 @@ if (process.argv && process.argv.length > 1) {
 
   options.startUrls = options.startUrls.concat(options._)
 
-  siteweb(options, (err, data) => {
+  siteweb.run(options, (err, data) => {
     if (err) {
       throw new Error(err)
     }
-    // process.stdout.write(data)
+    process.stdout.write(JSON.stringify(data))
   })
 } else {
   throw new Error('You need to pass arguments to css-razor')
