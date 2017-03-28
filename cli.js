@@ -10,7 +10,9 @@ if (process.argv && process.argv.length > 1) {
   defaultOptions.outputFile = '' // Default to no output file over cli because of stdout.
   const options = Object.assign({}, defaultOptions, argv)
 
-  options.startUrls = options.startUrls.concat(options._)
+  options.startUrls = options._.length > 0
+    ? options._
+    : options.startUrls
 
   siteweb.run(options, (err, data) => {
     if (err) {
