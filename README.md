@@ -85,6 +85,6 @@ Be careful! This tool recursively fetches all the links on a website. By default
 
 ## TODO
 
-- demo page with visualization!
+- demo page with visualization (more detail)
 - more output options / data?
 - make a similar project using nightmare that can run js
