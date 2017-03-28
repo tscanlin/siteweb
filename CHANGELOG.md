@@ -2,10 +2,11 @@
 ...
 
 
-### 1.2.0
+### 1.5.0
 
 #### Added
 - Got CLI working
 - Promise API
 - Tests
 - Core functionality
+- Readme
