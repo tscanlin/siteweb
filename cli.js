@@ -18,6 +18,7 @@ if (process.argv && process.argv.length > 1) {
     if (err) {
       throw new Error(err)
     }
+
     process.stdout.write(JSON.stringify(data))
   })
 } else {

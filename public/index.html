@@ -10,13 +10,23 @@
   </head>
   <body>
     <!-- APP_CONTENT_HERE -->
-    <form id="input" class="ma3">
-      <input type="text" name="url">
-      <input type="submit" name="" value="Submit">
-    </form>
+    <div class="ma3">
+      <form id="input">
+        <label>
+          Url
+          <input type="text" name="url" />
+        </label>
+        <div>or<div>
+        <label>
+          File
+          <input id="upload" type="file" />
+        </label>
+        <input type="submit" name="" value="Submit" />
+      </form>
 
-    <h2 class="ml3">Results</h2>
-    <div id="results"></div>
+      <h2>Results</h2>
+      <div id="results"></div>
+    </div>
 
     <!-- <script src="assets/js/tocbot.js"></script> -->
     <script src="./d3.min.js"></script>
@@ -25,29 +35,47 @@
       document.querySelector('#input').addEventListener('submit', runSiteweb)
 
       function runSiteweb(e) {
-        if (e) e.preventDefault()
-        var opt = e && e.target
+        if (e) {
+          e.preventDefault()
+          var url = e.target && e.target.children[0].value
+
+          if (e.target && e.target.children[1].files.length > 0) {
+            var f = e.target.children[1].files[0]
+
+            var r = new FileReader()
+            r.onload = function(e) {
+      	      var contents = e.target.result
+              try {
+                displayData(JSON.parse(contents))
+              } catch (e) {}
+            }
+            r.readAsText(f)
+          }
+        }
+        var opt = url
           ? {
-            startUrls: [e.target.children[0].value]
-          } : {}
-        siteweb.run(opt).then(function(data) {
-          var arr = Object.keys(data.pages.internal).map(function(pg) {
-            return data.pages.internal[pg]
-          })
+            startUrls: [ url ]
+          } : null
+        siteweb.run(opt).then(displayData)
+      }
 
-          var results = d3.select('#results')
-            .classed('ma3', true)
-
-          var divs = results.selectAll('div')
-            .data(arr)
-            .enter().append('div')
-
-          divs.append('div')
-            .text(function(d) { return d.url + ' (' + d.fetchTime + 'ms)'; })
-          divs.append('div')
-            .classed('h1 bg-navy mt1 mb3', true)
-            .style('width', function(d) { return d.fetchTime + 'px'; })
+      function displayData(data) {
+        var arr = Object.keys(data.pages.internal).map(function(pg) {
+          return data.pages.internal[pg]
         })
+
+        var results = d3.select('#results')
+          .classed('ma3', true)
+
+        var divs = results.selectAll('div')
+          .data(arr)
+          .enter().append('div')
+
+        divs.append('div')
+          .text(function(d) { return d.url + ' (' + d.fetchTime + 'ms)' })
+        divs.append('div')
+          .classed('h1 bg-navy mt1 mb3', true)
+          .style('width', function(d) { return d.fetchTime + 'px' })
       }
 
       runSiteweb()

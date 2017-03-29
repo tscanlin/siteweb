@@ -20,7 +20,5 @@ module.exports = {
   // Post fetch callback.
   postFetchCallback: () => {},
   // fetch options.
-  fetchOptions: {
-    // mode: 'no-cors'
-  }
+  fetchOptions: {}
 }
