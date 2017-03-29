@@ -39,7 +39,7 @@
           e.preventDefault()
           var url = e.target && e.target.children[0].value
 
-          if (e.target && e.target.children[1].files.length > 0) {
+          if (e.target && e.target.children[1].files && e.target.children[1].files.length > 0) {
             var f = e.target.children[1].files[0]
 
             var r = new FileReader()
