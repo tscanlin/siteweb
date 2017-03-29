@@ -46,7 +46,7 @@
             .text(function(d) { return d.url + ' (' + d.fetchTime + 'ms)'; })
           divs.append('div')
             .classed('h1 bg-navy mt1 mb3', true)
-            .style('width', function(d) { return d.fetchTime * 5 + 'px'; })
+            .style('width', function(d) { return d.fetchTime + 'px'; })
         })
       }
 

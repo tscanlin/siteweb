@@ -13,6 +13,12 @@ siteweb is a tool that can quickly and easily get stats about all the pages on y
 - option to add a delay between requests
 
 
+### Demo
+
+**Note:** This online demo is still limited by the same origin policy so it the online version may not work with many websites, but the node version does not have this limitation. Feel free to try it out against my blog since it responds with the `Access-Control-Allow-Origin:*` header.
+
+[Try it online](https://tscanlin.github.io/siteweb/public/)
+
 ## Getting Started
 
 ```js
