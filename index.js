@@ -31,9 +31,7 @@ function run(opt, callback) {
       options.startUrls.forEach(function(startUrl) {
         queue.add(function() {
           return fetchUrl(startUrl, true)
-        }).then(checkQueue).catch(function(e) {
-          console.error(e)
-        })
+        }).then(checkQueue).catch(catchQueue)
       })
     }
 
@@ -120,13 +118,7 @@ function run(opt, callback) {
             if (fullUrlInternal || options.fetchExternal) {
               queue.add(function() {
                 return fetchUrl(fullUrl, fullUrlInternal)
-              }).then(checkQueue).catch(function(e) {
-                if (callback) {
-                  callback(e)
-                }
-                reject(e)
-                console.error(e)
-              })
+              }).then(checkQueue).catch(catchQueue)
             } else {
               output.pages.external[fullUrl] = {}
             }
@@ -147,6 +139,17 @@ function run(opt, callback) {
         resolve(output)
       }
       return data
+    }
+
+    function catchQueue(e) {
+      if (callback) {
+        callback(e)
+      }
+      if (options.outputOnError) {
+        console.log(output)
+      }
+      reject(e)
+      console.error(e)
     }
   })
 }

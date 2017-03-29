@@ -15,6 +15,8 @@ module.exports = {
   maxPages: 500,
   // Delay between requests in ms.
   delay: 0,
+  // Delay between requests in ms.
+  outputOnError: true,
   // Pre fetch callback.
   preFetchCallback: () => {},
   // Post fetch callback.
