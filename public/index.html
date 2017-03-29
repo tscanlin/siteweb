@@ -14,7 +14,7 @@
       <form id="input">
         <label>
           Url
-          <input type="text" name="url" />
+          <input id="url" type="text" name="url" />
         </label>
         <div>or<div>
         <label>
@@ -38,10 +38,12 @@
         var url
         if (e) {
           e.preventDefault()
-          url = e.target && e.target.children[0].value
+          var urlInput = document.querySelector('#url')
+          var fileInput = document.querySelector('#upload')
+          url = urlInput.value
 
-          if (e.target && e.target.children[1].files && e.target.children[1].files.length > 0) {
-            var f = e.target.children[1].files[0]
+          if (fileInput.files && fileInput.files.length > 0) {
+            var f = fileInput.files[0]
 
             var r = new FileReader()
             r.onload = function(e) {
