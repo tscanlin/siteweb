@@ -46,7 +46,7 @@ function run(opt, callback) {
       }
       url = url.split('#')[0]
 
-      return new Promise(function(res, rej) {
+      const p = new Promise(function(res, rej) {
         // Skip mailto and ftp links.
         if (url.indexOf('mailto:') === 0 || url.indexOf('ftp:') === 0) {
           res(output)
@@ -56,9 +56,10 @@ function run(opt, callback) {
           requests[url] = {}
           if (options.preFetchCallback) {
             options.preFetchCallback({
-              url: url,
-              requests: requests,
               output: output,
+              promise: p,
+              requests: requests,
+              url: url,
             })
           }
           requests[url].startTime = Date.now()
@@ -92,9 +93,10 @@ function run(opt, callback) {
 
               if (options.postFetchCallback) {
                 options.postFetchCallback({
-                  url: url,
-                  requests: requests,
                   output: output,
+                  promise: p,
+                  requests: requests,
+                  url: url,
                 })
               }
 
@@ -104,6 +106,8 @@ function run(opt, callback) {
             })
         }, options.delay)
       })
+
+      return p
     }
 
     function processLink(i, link, url) {
