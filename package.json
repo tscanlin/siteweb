@@ -1,6 +1,6 @@
 {
   "name": "siteweb",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "crawl a site to generate a sitemap",
   "main": "index.js",
   "bin": {
