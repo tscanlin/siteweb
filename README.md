@@ -15,9 +15,7 @@ siteweb is a tool that can quickly and easily get stats about all the pages on y
 
 ### Demo
 
-**Note:** This online demo is still limited by the same origin policy so it the online version may not work with many websites, but the node version does not have this limitation. Feel free to try it out against my blog since it responds with the `Access-Control-Allow-Origin:*` header.
-
-Also the Demo has a file input to visualize the json structure it generates.
+**Note:** This online demo is still limited by the [same origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) so it may not work with many websites (unless they have the `Access-Control-Allow-Origin:*` header). However, the node version does not have this limitation and should work with any website. Also, the Demo has a file input to visualize the json structure that the cli generates.
 
 [Try it online](https://tscanlin.github.io/siteweb/public/)
 
